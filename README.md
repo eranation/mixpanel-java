@@ -20,7 +20,7 @@ Installation
       <dependency>
         <groupId>org.eranmedan</groupId>
         <artifactId>mixpanel-java</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>0.0.2-SNAPSHOT</version>
       </dependency>
     </dependencies>
     

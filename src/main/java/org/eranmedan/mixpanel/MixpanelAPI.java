@@ -15,6 +15,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
 import javax.servlet.http.Cookie;
@@ -109,7 +110,15 @@ public class MixpanelAPI {
   public MixpanelAPI(String token, Logger logger) {
     // TODO: isn't a fixed threadpool based on
     // Runtime.getRuntime().availableProcessors() better?
-    this(token, logger, Executors.newCachedThreadPool());
+    this(token, logger, Executors.newCachedThreadPool(new ThreadFactory() {
+      
+      @Override
+      public Thread newThread(Runnable r) {
+        Thread t = new Thread(r);
+        t.setPriority(Thread.MIN_PRIORITY);
+        return t;
+      }
+    }));
   }
 
   /**
