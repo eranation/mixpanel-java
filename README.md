@@ -9,7 +9,7 @@ Maven:
       ...
       <repository>
         <id>local-repo</id>
-        <url>file://pathtoyour/localrepo</url>
+        <url>http://raw.github.com/eranation/mixpanel-java/master/localrepo</url>
       </repository>
     </repositories>
     ...
