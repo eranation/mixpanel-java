@@ -58,8 +58,9 @@ import com.google.gson.JsonParser;
  * mixpanelAPI.track(&quot;test6&quot;, uniqueId);
  * 
  * 
- *  
+ * 
  * </pre>
+ * 
  * </blockquote>
  * 
  * <b>For example, <code>test2</code> will send a message of this format:</b>
@@ -78,7 +79,9 @@ import com.google.gson.JsonParser;
  * }
  * </pre>
  * 
- * <b>Note:</b> In most use cases you can ignore the return value of the <code>Future</code> returned for performance. The Future is mostly for testing purposes
+ * <b>Note:</b> In most use cases you can ignore the return value of the
+ * <code>Future</code> returned for performance. The Future is mostly for
+ * testing purposes
  * 
  * @version 0.1
  * @author Eran Medan
@@ -98,7 +101,7 @@ public class MixpanelAPI {
   public MixpanelAPI(String token) {
     this(token, null);
   }
-  
+
   /**
    * @see #MixpanelAPI(String token, Logger logger, ExecutorService threadPool)
    * 
@@ -110,39 +113,54 @@ public class MixpanelAPI {
   }
 
   /**
-   * Create a new MixpanelAPI object (usually, there is no need for more than one)
+   * Create a new MixpanelAPI object (usually, there is no need for more than
+   * one)
    * 
-   * @param token the MixPanel API token
-   * @param logger an optional Logger, if none provided a {@link NOPLogger} is provided
-   * @param threadPool an optional custom ExecutorService to queue the asynchronous HTTP calls to Mixpanel's API, if none provided a <code>Executors.newCachedThreadPool()</code> is used
+   * @param token
+   *          the MixPanel API token
+   * @param logger
+   *          an optional Logger, if none provided a {@link NOPLogger} is
+   *          provided
+   * @param threadPool
+   *          an optional custom ExecutorService to queue the asynchronous HTTP
+   *          calls to Mixpanel's API, if none provided a
+   *          <code>Executors.newCachedThreadPool()</code> is used
    */
-  
+
   public MixpanelAPI(String token, Logger logger, ExecutorService threadPool) {
     this.token = token;
     this.logger = (logger == null) ? NOPLogger.NOP_LOGGER : logger;
     this.threadPool = threadPool;
   }
 
-/**
- * @see #track(String event, String nameTag, HttpServletRequest request, String cookieName, Map additionalProperties)
- */
+  /**
+   * @see #track(String event, String nameTag, HttpServletRequest request,
+   *      String cookieName, Map additionalProperties)
+   */
   public void track(String event, String nameTag, HttpServletRequest request, String cookieName) {
     track(event, nameTag, request, cookieName, null);
   }
 
   /**
-   * Track an event 
+   * Track an event
    * 
-   * @param request the request object, will be used to deduce the IP address and Mixpanel cookie for the unique ID 
-   * @param cookieName the mixpanel cookie name, e.g. if this is your setup: <pre>
+   * @param request
+   *          the request object, will be used to deduce the IP address and
+   *          Mixpanel cookie for the unique ID
+   * @param cookieName
+   *          the mixpanel cookie name, e.g. if this is your setup:
+   * 
+   *          <pre>
    * mixpanel.init(token, {
-        cookie_expiration: 365,
-        cookie_name: "foobar"
-     }
+   *         cookie_expiration: 365,
+   *         cookie_name: "foobar"
+   *      }
    * </pre>
-   * then the cookie name is actually <code>mp_foobar</code>
    * 
-   * @see #track(String event, String distinctId, String nameTag, String ip, Date time, Map additionalProperties)
+   *          then the cookie name is actually <code>mp_foobar</code>
+   * 
+   * @see #track(String event, String distinctId, String nameTag, String ip,
+   *      Date time, Map additionalProperties)
    */
   public Future<Boolean> track(String event, String nameTag, HttpServletRequest request, String cookieName, Map<String, String> additionalProperties) {
     Cookie mixpanelCookie = findCookieByName(request, cookieName);
@@ -167,68 +185,95 @@ public class MixpanelAPI {
 
     return track(event, uniqueId, nameTag, ip, null, null);
   }
-  
+
   /**
-   * @see #track(String event, String distinctId, String nameTag, String ip, Date time, Map additionalProperties)
+   * @see #track(String event, String distinctId, String nameTag, String ip,
+   *      Date time, Map additionalProperties)
    */
   public Future<Boolean> track(String event, String distinctId) {
     return track(event, distinctId, null, null, null, null);
   }
 
   /**
-   * @return 
-   * @see #track(String event, String distinctId, String nameTag, String ip, Date time, Map additionalProperties)
+   * @return
+   * @see #track(String event, String distinctId, String nameTag, String ip,
+   *      Date time, Map additionalProperties)
    */
   public Future<Boolean> track(String event, String distinctId, Map<String, String> additionalProperties) {
     return track(event, distinctId, null, null, null, additionalProperties);
   }
 
   /**
-   * @see #track(String event, String distinctId, String nameTag, String ip, Date time, Map additionalProperties)
+   * @see #track(String event, String distinctId, String nameTag, String ip,
+   *      Date time, Map additionalProperties)
    */
   public Future<Boolean> track(String event, String distinctId, String nameTag) {
     return track(event, distinctId, nameTag, null, null, null);
   }
 
   /**
-   * @see #track(String event, String distinctId, String nameTag, String ip, Date time, Map additionalProperties)
+   * @see #track(String event, String distinctId, String nameTag, String ip,
+   *      Date time, Map additionalProperties)
    */
   public Future<Boolean> track(String event, String distinctId, String nameTag, String ip) {
     return track(event, distinctId, nameTag, ip, null, null);
   }
 
   /**
-   * @see #track(String event, String distinctId, String nameTag, String ip, Date time, Map additionalProperties)
+   * @see #track(String event, String distinctId, String nameTag, String ip,
+   *      Date time, Map additionalProperties)
    */
   public Future<Boolean> track(String event, String distinctId, String nameTag, String ip, Date time) {
     return track(event, distinctId, nameTag, ip, time, null);
   }
-  
-/**
- * Tracks an event 
- * 
- * @param event the (required) event name 
- * @param distinctId (required) the user's distinct mixpanel ID (usually stored in a cookie) or any string that uniquely can identify a user. e.g. the user id.
- * @param nameTag (optional) is the way to set a name for a given user for our streams feature. You can set this to any string value like an email, first and last name, or username.
- * @param ip (optional) is a raw string IP Address (e.g. "127.0.0.1") that you pass to our API. This is largely useful if you're making requests from your backend and would like geolocation processing done on your requests otherwise it's safe to use the &ip=1 parameter described in the docs that is outside of the encoded data string. 
- * @param time is the time at which the event occured, it must be a unix timestamp, requests will be rejected that are 5 days older than codesent time - this is done for security reasons as your token is public generally. Format is seconds since 1970, GMT time zone. If you'd like to import data, you can through a special API for any event.
- * @param additionalProperties additional custom properties in a name-value map
- * @return a {@link Future} object returning a Boolean when calling it's <code>get()</code> method, true means a successful call (at the moment, true is the only possible return value, any error will cause an {@link ExecutionException} to be thrown when calling the future's get method). <b>Note:</b> In most use cases you can ignore the return value of the <code>Future</code> returned for performance. The Future is mostly for testing purposes   
- */
+
+  /**
+   * Tracks an event
+   * 
+   * @param event
+   *          the (required) event name
+   * @param distinctId
+   *          (required) the user's distinct mixpanel ID (usually stored in a
+   *          cookie) or any string that uniquely can identify a user. e.g. the
+   *          user id.
+   * @param nameTag
+   *          (optional) is the way to set a name for a given user for our
+   *          streams feature. You can set this to any string value like an
+   *          email, first and last name, or username.
+   * @param ip
+   *          (optional) is a raw string IP Address (e.g. "127.0.0.1") that you
+   *          pass to our API. This is largely useful if you're making requests
+   *          from your backend and would like geolocation processing done on
+   *          your requests otherwise it's safe to use the &ip=1 parameter
+   *          described in the docs that is outside of the encoded data string.
+   * @param time
+   *          is the time at which the event occured, it must be a unix
+   *          timestamp, requests will be rejected that are 5 days older than
+   *          codesent time - this is done for security reasons as your token is
+   *          public generally. Format is seconds since 1970, GMT time zone. If
+   *          you'd like to import data, you can through a special API for any
+   *          event.
+   * @param additionalProperties
+   *          additional custom properties in a name-value map
+   * @return a {@link Future} object returning a Boolean when calling it's
+   *         <code>get()</code> method, true means a successful call (at the
+   *         moment, true is the only possible return value, any error will
+   *         cause an {@link ExecutionException} to be thrown when calling the
+   *         future's get method). <b>Note:</b> In most use cases you can ignore
+   *         the return value of the <code>Future</code> returned for
+   *         performance. The Future is mostly for testing purposes
+   */
 
   public Future<Boolean> track(final String event, final String distinctId, final String nameTag, final String ip, final Date time, final Map<String, String> additionalProperties) {
-
     return threadPool.submit(new Callable<Boolean>() {
       @Override
       public Boolean call() throws Exception {
-        logger.warn("test the test");
         if (event == null) {
           throw new RuntimeException("event field is mandatory");
         }
         if (distinctId == null) {
           throw new RuntimeException("distinctId field is mandatory");
         }
-
         JsonObject jo = new JsonObject();
         jo.addProperty("event", event);
         JsonObject properties = new JsonObject();
@@ -298,19 +343,14 @@ public class MixpanelAPI {
     }
     // no need to threadPool.awaitTermination, let it end when it ends, just
     // stop accepting new tasks.
-
   }
 
   public void awaitTermiation(long timeout, TimeUnit unit) {
     try {
-      threadPool.awaitTermination(10, TimeUnit.SECONDS);
+      threadPool.awaitTermination(timeout, TimeUnit.SECONDS);
     } catch (InterruptedException e) {
-      logger.warn("Didn't terminate after 10 seconds");
+      logger.warn("Didn't terminate after " + timeout + " seconds");
     }
-
-    // no need to threadPool.awaitTermination, let it end when it ends, just
-    // stop accepting new tasks.
-
   }
 
   @Override
