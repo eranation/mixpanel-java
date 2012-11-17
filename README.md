@@ -63,9 +63,6 @@ Attribution/Credits
 
 Copyright (c) 2012 Eran Medan
 
-#Contributions from:
-# - [Your Name Here](https://github.com/yournamehere)
-
 License
 -------------------
 
