@@ -347,9 +347,9 @@ public class MixpanelAPI {
 
   public void awaitTermiation(long timeout, TimeUnit unit) {
     try {
-      threadPool.awaitTermination(timeout, TimeUnit.SECONDS);
+      threadPool.awaitTermination(timeout, unit);
     } catch (InterruptedException e) {
-      logger.warn("Didn't terminate after " + timeout + " seconds");
+      logger.warn("Didn't terminate after " + timeout + " " + unit.toString());
     }
   }
 
