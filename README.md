@@ -59,7 +59,7 @@ Attribution/Credits
 
 - Mixpanel's documentation: https://mixpanel.com/docs/api-documentation/http-specification-insert-data
 - Readme format copied from https://github.com/carlsverre/mixpanel-node  
-- Inspired by the idea of the low priority filter from: https://github.com/scalascope/mixpanel-java/blob/master/src/main/java/com/mixpanel/java/mpmetrics/LowPriorityThreadFactory.java
+- Inspired by the idea of the low priority Thread factory from: https://github.com/scalascope/mixpanel-java/blob/master/src/main/java/com/mixpanel/java/mpmetrics/LowPriorityThreadFactory.java
 
 Copyright (c) 2012 Eran Medan
 
