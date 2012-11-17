@@ -1,4 +1,4 @@
-package com.eranmedan.mixpanel;
+package org.eranmedan.mixpanel;
 
 import java.io.IOException;
 import java.io.InputStream;

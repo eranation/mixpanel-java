@@ -10,11 +10,11 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
+import org.eranmedan.mixpanel.MixpanelAPI;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.eranmedan.mixpanel.MixpanelAPI;
 
 public class MixpanelAPITest {
 
