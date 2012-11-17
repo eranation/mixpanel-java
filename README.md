@@ -8,8 +8,8 @@ Maven:
     <repositories>
       ...
       <repository>
-        <id>github-eranation</id>
-        <url>http://raw.github.com/eranation/mixpanel-java/master/localrepo</url>
+        <id>local-repo</id>
+        <url>file://pathtoyour/localrepo</url>
       </repository>
     </repositories>
     ...
