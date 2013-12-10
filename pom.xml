@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.eranmedan</groupId>
 	<artifactId>mixpanel-java</artifactId>
-	<version>0.0.2-SNAPSHOT</version>
+	<version>0.0.3</version>
 	<name>mixpanel-java</name>
 	<properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

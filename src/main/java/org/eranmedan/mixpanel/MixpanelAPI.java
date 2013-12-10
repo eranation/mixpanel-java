@@ -192,7 +192,7 @@ public class MixpanelAPI {
       uniqueId = ip;
     }
 
-    return track(event, uniqueId, nameTag, ip, null, null);
+    return track(event, uniqueId, nameTag, ip, null, additionalProperties);
   }
 
   /**
