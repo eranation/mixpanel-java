@@ -1,3 +1,5 @@
+DEPRECATED 
+
 mixpanel-java
 =============
 
